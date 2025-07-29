@@ -543,7 +543,6 @@ export default function MediaKitGenerator() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedElement && !isPreviewMode) {
         if (e.key === "Delete") {
-          // Remove Backspace from here
           deleteElement(selectedElement)
         }
         if (e.key === "Escape") {
@@ -888,54 +887,76 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Chart Items</Label>
                           <div className="space-y-2 mt-2">
                             {selectedEl.chartData?.map((item, index) => (
-                              <div key={index} className="flex gap-2 items-center">
-                                <Input
-                                  value={item.label}
-                                  onChange={(e) => {
-                                    const newData = [...(selectedEl.chartData || [])]
-                                    newData[index].label = e.target.value
-                                    updateElement(selectedEl.id, { chartData: newData })
-                                  }}
-                                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 text-xs"
-                                  placeholder="Label"
-                                />
-                                <Input
-                                  type="number"
-                                  value={item.value}
-                                  onChange={(e) => {
-                                    const newData = [...(selectedEl.chartData || [])]
-                                    newData[index].value = Math.max(
-                                      0,
-                                      Math.min(100, Number.parseInt(e.target.value) || 0),
-                                    )
-                                    updateElement(selectedEl.id, { chartData: newData })
-                                  }}
-                                  className="bg-white/10 border-white/20 text-white w-16 text-xs"
-                                  min="0"
-                                  max="100"
-                                />
-                                <Input
-                                  type="color"
-                                  value={item.color}
-                                  onChange={(e) => {
-                                    const newData = [...(selectedEl.chartData || [])]
-                                    newData[index].color = e.target.value
-                                    updateElement(selectedEl.id, { chartData: newData })
-                                  }}
-                                  className="w-8 h-8 bg-white/10 border-white/20"
-                                />
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => {
-                                    const newData = selectedEl.chartData?.filter((_, i) => i !== index) || []
-                                    const newHeight = Math.max(140, 60 + newData.length * 25)
-                                    updateElement(selectedEl.id, { chartData: newData, height: newHeight })
-                                  }}
-                                  className="border-red-500/50 text-red-400 hover:bg-red-500/10 p-1"
-                                >
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
+                              <div key={index} className="space-y-2 p-3 bg-white/5 rounded-lg">
+                                <div className="flex gap-2 items-center">
+                                  <Input
+                                    value={item.label}
+                                    onChange={(e) => {
+                                      const newData = [...(selectedEl.chartData || [])]
+                                      newData[index].label = e.target.value
+                                      updateElement(selectedEl.id, { chartData: newData })
+                                    }}
+                                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 text-xs flex-1"
+                                    placeholder="Label"
+                                  />
+                                  <Input
+                                    type="number"
+                                    value={item.value}
+                                    onChange={(e) => {
+                                      const newData = [...(selectedEl.chartData || [])]
+                                      newData[index].value = Math.max(
+                                        0,
+                                        Math.min(100, Number.parseInt(e.target.value) || 0),
+                                      )
+                                      updateElement(selectedEl.id, { chartData: newData })
+                                    }}
+                                    className="bg-white/10 border-white/20 text-white w-16 text-xs"
+                                    min="0"
+                                    max="100"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const newData = selectedEl.chartData?.filter((_, i) => i !== index) || []
+                                      const newHeight = Math.max(140, 60 + newData.length * 25)
+                                      updateElement(selectedEl.id, { chartData: newData, height: newHeight })
+                                    }}
+                                    className="border-red-500/50 text-red-400 hover:bg-red-500/10 p-1"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                </div>
+
+                                <div>
+                                  <Label className="text-white text-xs">Color</Label>
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {CHART_COLORS.map((color) => (
+                                      <button
+                                        key={color}
+                                        onClick={() => {
+                                          const newData = [...(selectedEl.chartData || [])]
+                                          newData[index].color = color
+                                          updateElement(selectedEl.id, { chartData: newData })
+                                        }}
+                                        className={`w-6 h-6 rounded border-2 ${
+                                          item.color === color ? "border-white" : "border-transparent"
+                                        }`}
+                                        style={{ backgroundColor: color }}
+                                      />
+                                    ))}
+                                  </div>
+                                  <Input
+                                    type="color"
+                                    value={item.color}
+                                    onChange={(e) => {
+                                      const newData = [...(selectedEl.chartData || [])]
+                                      newData[index].color = e.target.value
+                                      updateElement(selectedEl.id, { chartData: newData })
+                                    }}
+                                    className="mt-1 w-full bg-white/10 border-white/20"
+                                  />
+                                </div>
                               </div>
                             ))}
 
@@ -1131,7 +1152,7 @@ export default function MediaKitGenerator() {
                               <Label className="text-white text-sm">Border Width</Label>
                               <Slider
                                 value={[selectedEl.borderWidth || 3]}
-                                onValueChange={([value]) => updateElement(selectedEl.id, { borderWidth: value })}
+                                onValueChange={(values) => updateElement(selectedEl.id, { borderWidth: values[0] })}
                                 min={1}
                                 max={10}
                                 step={1}
@@ -1150,7 +1171,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Border Radius</Label>
                           <Slider
                             value={[selectedEl.borderRadius || 0]}
-                            onChange={(value) => updateElement(selectedEl.id, { borderRadius: value })}
+                            onValueChange={(values) => updateElement(selectedEl.id, { borderRadius: values[0] })}
                             min={0}
                             max={100}
                             step={1}
@@ -1192,7 +1213,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Font Size</Label>
                           <Slider
                             value={[selectedEl.fontSize || 16]}
-                            onChange={(value) => updateElement(selectedEl.id, { fontSize: value })}
+                            onValueChange={(values) => updateElement(selectedEl.id, { fontSize: values[0] })}
                             min={10}
                             max={48}
                             step={1}
@@ -1205,7 +1226,9 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Font Weight</Label>
                           <Select
                             value={selectedEl.fontWeight || "normal"}
-                            onChange={(value) => updateElement(selectedEl.id, { fontWeight: value })}
+                            onValueChange={(value: "normal" | "bold" | "semibold") =>
+                              updateElement(selectedEl.id, { fontWeight: value })
+                            }
                           >
                             <SelectTrigger className="bg-white/10 border-white/20 text-white">
                               <SelectValue />
@@ -1222,7 +1245,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Border Radius</Label>
                           <Slider
                             value={[selectedEl.borderRadius || 0]}
-                            onChange={(value) => updateElement(selectedEl.id, { borderRadius: value })}
+                            onValueChange={(values) => updateElement(selectedEl.id, { borderRadius: values[0] })}
                             min={0}
                             max={selectedEl.type === "photo" ? 100 : 50}
                             step={1}
@@ -1235,7 +1258,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Padding</Label>
                           <Slider
                             value={[selectedEl.padding || 0]}
-                            onChange={(value) => updateElement(selectedEl.id, { padding: value })}
+                            onValueChange={(values) => updateElement(selectedEl.id, { padding: values[0] })}
                             min={0}
                             max={40}
                             step={2}
