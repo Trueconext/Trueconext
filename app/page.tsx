@@ -267,16 +267,67 @@ export default function MediaKitGenerator() {
     setDraggedElement(null)
   }, [])
 
+  const handleTouchStart = (e: React.TouchEvent, elementId: string) => {
+    if (isPreviewMode) return
+
+    const element = elements.find((el) => el.id === elementId)
+    if (!element) return
+
+    const rect = canvasRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const touch = e.touches[0]
+    setDraggedElement(elementId)
+    setSelectedElement(elementId)
+    setDragOffset({
+      x: touch.clientX - rect.left - element.x,
+      y: touch.clientY - rect.top - element.y,
+    })
+  }
+
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!draggedElement || !canvasRef.current) return
+
+      e.preventDefault() // Prevent scrolling while dragging
+
+      const rect = canvasRef.current.getBoundingClientRect()
+      const element = elements.find((el) => el.id === draggedElement)
+      const elementWidth = element?.width || 100
+
+      const touch = e.touches[0]
+      const newX = snapToGrid(
+        Math.max(0, Math.min(CANVAS_WIDTH - elementWidth, touch.clientX - rect.left - dragOffset.x)),
+      )
+      const newY = snapToGrid(Math.max(0, Math.min(canvasHeight - 50, touch.clientY - rect.top - dragOffset.y)))
+
+      updateElement(draggedElement, { x: newX, y: newY })
+    },
+    [draggedElement, dragOffset, elements, canvasHeight],
+  )
+
+  const handleTouchEnd = useCallback(() => {
+    setDraggedElement(null)
+  }, [])
+
   React.useEffect(() => {
     if (draggedElement) {
+      // Mouse events
       document.addEventListener("mousemove", handleMouseMove)
       document.addEventListener("mouseup", handleMouseUp)
+
+      // Touch events for mobile
+      document.addEventListener("touchmove", handleTouchMove, { passive: false })
+      document.addEventListener("touchend", handleTouchEnd)
+
       return () => {
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)
+        document.removeEventListener("touchmove", handleTouchMove)
+        document.removeEventListener("touchend", handleTouchEnd)
       }
     }
-  }, [draggedElement, handleMouseMove, handleMouseUp])
+  }, [draggedElement, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
 
   const getSocialIconSVG = (platform: string) => {
     const icons: Record<string, string> = {
@@ -491,7 +542,8 @@ export default function MediaKitGenerator() {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedElement && !isPreviewMode) {
-        if (e.key === "Delete" || e.key === "Backspace") {
+        if (e.key === "Delete") {
+          // Remove Backspace from here
           deleteElement(selectedElement)
         }
         if (e.key === "Escape") {
@@ -1098,7 +1150,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Border Radius</Label>
                           <Slider
                             value={[selectedEl.borderRadius || 0]}
-                            onValueChange={([value]) => updateElement(selectedEl.id, { borderRadius: value })}
+                            onChange={(value) => updateElement(selectedEl.id, { borderRadius: value })}
                             min={0}
                             max={100}
                             step={1}
@@ -1140,7 +1192,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Font Size</Label>
                           <Slider
                             value={[selectedEl.fontSize || 16]}
-                            onValueChange={([value]) => updateElement(selectedEl.id, { fontSize: value })}
+                            onChange={(value) => updateElement(selectedEl.id, { fontSize: value })}
                             min={10}
                             max={48}
                             step={1}
@@ -1153,7 +1205,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Font Weight</Label>
                           <Select
                             value={selectedEl.fontWeight || "normal"}
-                            onValueChange={(value: any) => updateElement(selectedEl.id, { fontWeight: value })}
+                            onChange={(value) => updateElement(selectedEl.id, { fontWeight: value })}
                           >
                             <SelectTrigger className="bg-white/10 border-white/20 text-white">
                               <SelectValue />
@@ -1170,7 +1222,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Border Radius</Label>
                           <Slider
                             value={[selectedEl.borderRadius || 0]}
-                            onValueChange={([value]) => updateElement(selectedEl.id, { borderRadius: value })}
+                            onChange={(value) => updateElement(selectedEl.id, { borderRadius: value })}
                             min={0}
                             max={selectedEl.type === "photo" ? 100 : 50}
                             step={1}
@@ -1183,7 +1235,7 @@ export default function MediaKitGenerator() {
                           <Label className="text-white">Padding</Label>
                           <Slider
                             value={[selectedEl.padding || 0]}
-                            onValueChange={([value]) => updateElement(selectedEl.id, { padding: value })}
+                            onChange={(value) => updateElement(selectedEl.id, { padding: value })}
                             min={0}
                             max={40}
                             step={2}
@@ -1228,6 +1280,7 @@ export default function MediaKitGenerator() {
                       <div
                         key={element.id}
                         onMouseDown={(e) => handleMouseDown(e, element.id)}
+                        onTouchStart={(e) => handleTouchStart(e, element.id)}
                         className={`absolute transition-all duration-200 hover:scale-105 ${
                           isPreviewMode ? "cursor-default" : "cursor-move"
                         } ${selectedElement === element.id && !isPreviewMode ? "ring-2 ring-blue-400" : ""} ${
