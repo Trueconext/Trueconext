@@ -57,10 +57,10 @@ interface BackgroundGradient {
   colors: { color: string; position: number }[]
 }
 
-const GRID_SIZE = 5 // Changed from 20 to 5 for more precise positioning
+const GRID_SIZE = 5
 const CANVAS_WIDTH = 400
-const MIN_CANVAS_HEIGHT = 600 // Minimum height
-const FOOTER_HEIGHT = 60 // Space for footer
+const MIN_CANVAS_HEIGHT = 600
+const FOOTER_HEIGHT = 60
 
 const TRUECONEXT_COLORS = [
   "#10ff92",
@@ -113,9 +113,7 @@ export default function MediaKitGenerator() {
   const canvasHeight = useMemo(() => {
     if (elements.length === 0) return MIN_CANVAS_HEIGHT
 
-    const maxY = Math.max(
-      ...elements.map((el) => el.y + (el.height || 50) + 20), // Add some padding
-    )
+    const maxY = Math.max(...elements.map((el) => el.y + (el.height || 50) + 20))
 
     return Math.max(MIN_CANVAS_HEIGHT, maxY + FOOTER_HEIGHT)
   }, [elements])
@@ -134,10 +132,8 @@ export default function MediaKitGenerator() {
   const addElement = (type: MediaKitElement["type"], platform?: string) => {
     const platformData = platform ? socialPlatforms.find((p) => p.id === platform) : null
 
-    // Find the next available Y position
     const nextY = elements.length === 0 ? 100 : Math.max(...elements.map((el) => el.y + (el.height || 50))) + 80
 
-    // Calculate initial chart data and height separately
     const initialChartData =
       type === "chart"
         ? [
@@ -152,7 +148,7 @@ export default function MediaKitGenerator() {
         : type === "social"
           ? 50
           : type === "chart"
-            ? Math.max(140, 60 + (initialChartData ? initialChartData.length * 25 : 2 * 25)) // Increased base height and spacing
+            ? Math.max(140, 60 + (initialChartData ? initialChartData.length * 25 : 2 * 25))
             : undefined
 
     const newElement: MediaKitElement = {
@@ -189,7 +185,7 @@ export default function MediaKitGenerator() {
       width: type === "photo" ? 120 : type === "social" ? 280 : type === "chart" ? 300 : 100,
       height: initialHeight || 50,
       zIndex: elements.length,
-      padding: type === "social" ? 16 : type === "metric" ? 12 : type === "chart" ? 20 : 8, // Increased chart padding
+      padding: type === "social" ? 16 : type === "metric" ? 12 : type === "chart" ? 20 : 8,
       shadow: type === "social" || type === "metric" || type === "chart",
       chartData: initialChartData || [],
       chartTitle: type === "chart" ? "Demographics" : "",
@@ -263,7 +259,6 @@ export default function MediaKitGenerator() {
     setDraggedElement(null)
   }, [])
 
-  // Add event listeners
   React.useEffect(() => {
     if (draggedElement) {
       document.addEventListener("mousemove", handleMouseMove)
@@ -290,6 +285,17 @@ export default function MediaKitGenerator() {
         '<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>',
       linkedin:
         '<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>',
+      snapchat:
+        '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 16.568l-1.414 1.414L12 13.828l-4.154 4.154-1.414-1.414L10.586 12 6.432 7.846l1.414-1.414L12 10.586l4.154-4.154 1.414 1.414L13.414 12l4.154 4.568z"/>',
+      bluesky:
+        '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>',
+      website:
+        '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>',
+      paypal:
+        '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1 17h-2l1-6H8l1-2h2c1 0 2 1 2 2l-1 6z"/>',
+      kick: '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18l-6-6 6-6v4h6v4h-6v4z"/>',
+      trovo:
+        '<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"/>',
     }
     return icons[platform] || '<circle cx="12" cy="12" r="10"/>'
   }
@@ -461,7 +467,7 @@ export default function MediaKitGenerator() {
         ${elementsHTML}
         <div class="footer">
             <a href="https://trueconext.com/" target="_blank" rel="noopener noreferrer">
-                <img src="https://raw.githubusercontent.com/Trueconext/TrueConextW/refs/heads/main/Icon%20Only%20No%20Background.png" alt="TrueConext Logo" className="w-4 h-4 object-contain" />
+                <img src="https://raw.githubusercontent.com/Trueconext/TrueConextW/refs/heads/main/Icon%20Only%20No%20Background.png" alt="TrueConext Logo" style="width: 16px; height: 16px; object-fit: contain;" />
                 Powered by TrueConext
             </a>
         </div>
@@ -865,7 +871,7 @@ export default function MediaKitGenerator() {
                                   variant="outline"
                                   onClick={() => {
                                     const newData = selectedEl.chartData?.filter((_, i) => i !== index) || []
-                                    const newHeight = Math.max(140, 60 + newData.length * 25) // Updated height calculation
+                                    const newHeight = Math.max(140, 60 + newData.length * 25)
                                     updateElement(selectedEl.id, { chartData: newData, height: newHeight })
                                   }}
                                   className="border-red-500/50 text-red-400 hover:bg-red-500/10 p-1"
@@ -885,7 +891,7 @@ export default function MediaKitGenerator() {
                                   value: 0,
                                   color: CHART_COLORS[colorIndex],
                                 })
-                                const newHeight = Math.max(140, 60 + newData.length * 25) // Updated height calculation
+                                const newHeight = Math.max(140, 60 + newData.length * 25)
                                 updateElement(selectedEl.id, { chartData: newData, height: newHeight })
                               }}
                               className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20"
@@ -1211,57 +1217,57 @@ export default function MediaKitGenerator() {
         </div>
       </div>
       <style jsx global>{`
-  /* Modern Custom Scrollbars */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #10ff92, #7822ff);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #0de07a, #6b1fd9);
-    box-shadow: 0 0 10px rgba(16, 255, 146, 0.3);
-  }
-  
-  ::-webkit-scrollbar-corner {
-    background: transparent;
-  }
-  
-  /* Firefox Scrollbars */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: #10ff92 rgba(255, 255, 255, 0.05);
-  }
-  
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  /* Custom scrollbar for sidebar */
-  .sidebar::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(16, 255, 146, 0.6);
-    border-radius: 6px;
-  }
-  
-  .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(16, 255, 146, 0.8);
-  }
-`}</style>
+        /* Modern Custom Scrollbars */
+        ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(135deg, #10ff92, #7822ff);
+          border-radius: 10px;
+          transition: all 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(135deg, #0de07a, #6b1fd9);
+          box-shadow: 0 0 10px rgba(16, 255, 146, 0.3);
+        }
+        
+        ::-webkit-scrollbar-corner {
+          background: transparent;
+        }
+        
+        /* Firefox Scrollbars */
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: #10ff92 rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+          background: rgba(16, 255, 146, 0.6);
+          border-radius: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+          background: rgba(16, 255, 146, 0.8);
+        }
+      `}</style>
     </div>
   )
 }
