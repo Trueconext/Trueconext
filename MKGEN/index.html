@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueConext Media Kit Generator</title>
+    <meta name="description" content="Create professional media kits for TrueConext creators">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="https://raw.githubusercontent.com/Trueconext/TrueConextW/refs/heads/main/Icon%20Only%20No%20Background.png" alt="TrueConext Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1>TrueConext Media Kit Generator</h1>
+                        <p>Exclusive tool for TrueConext Creators</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="preview-btn" class="btn btn-outline">
+                        <i data-lucide="eye"></i>
+                        Preview Mode
+                    </button>
+                    <button id="download-btn" class="btn btn-primary">
+                        <i data-lucide="download"></i>
+                        Download HTML
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <!-- Basic Settings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Basic Settings</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label for="creator-name">Creator Name</label>
+                            <input type="text" id="creator-name" value="Creator Name" class="input">
+                        </div>
+                        
+                        <div class="canvas-info">
+                            <p>Canvas: 400 × <span id="canvas-height">600</span>px</p>
+                            <p>Elements: <span id="element-count">0</span></p>
+                        </div>
+
+                        <!-- Background Gradient -->
+                        <div class="form-group">
+                            <label>Background Gradient</label>
+                            <div class="gradient-controls">
+                                <div class="form-group">
+                                    <label for="gradient-type">Type</label>
+                                    <select id="gradient-type" class="input">
+                                        <option value="linear">Linear</option>
+                                        <option value="radial">Radial</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="direction-group">
+                                    <label for="gradient-direction">Direction</label>
+                                    <input type="text" id="gradient-direction" value="135deg" class="input" placeholder="135deg">
+                                </div>
+                                <div class="color-stop">
+                                    <input type="color" id="color1" value="#2d2d2d" class="color-input">
+                                    <input type="range" id="pos1" min="0" max="100" value="0" class="slider">
+                                    <span id="pos1-value">0%</span>
+                                </div>
+                                <div class="color-stop">
+                                    <input type="color" id="color2" value="#181819" class="color-input">
+                                    <input type="range" id="pos2" min="0" max="100" value="100" class="slider">
+                                    <span id="pos2-value">100%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Elements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add Elements</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="tabs">
+                            <div class="tab-buttons">
+                                <button class="tab-btn active" data-tab="social">Social</button>
+                                <button class="tab-btn" data-tab="text">Text</button>
+                                <button class="tab-btn" data-tab="metric">Metric</button>
+                                <button class="tab-btn" data-tab="photo">Photo</button>
+                                <button class="tab-btn" data-tab="chart">Chart</button>
+                            </div>
+                            
+                            <div class="tab-content active" id="social-tab">
+                                <button class="element-btn" data-type="social" data-platform="instagram">
+                                    <i data-lucide="instagram"></i> Instagram
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="youtube">
+                                    <i data-lucide="youtube"></i> YouTube
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="tiktok">
+                                    <i data-lucide="play"></i> TikTok
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="x">
+                                    <i data-lucide="twitter"></i> X (Twitter)
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="twitch">
+                                    <i data-lucide="twitch"></i> Twitch
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="facebook">
+                                    <i data-lucide="facebook"></i> Facebook
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="linkedin">
+                                    <i data-lucide="linkedin"></i> LinkedIn
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="snapchat">
+                                    <i data-lucide="camera"></i> Snapchat
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="bluesky">
+                                    <i data-lucide="message-circle"></i> Bluesky
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="website">
+                                    <i data-lucide="globe"></i> Website
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="paypal">
+                                    <i data-lucide="dollar-sign"></i> PayPal
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="kick">
+                                    <i data-lucide="play"></i> Kick
+                                </button>
+                                <button class="element-btn" data-type="social" data-platform="trovo">
+                                    <i data-lucide="gamepad-2"></i> Trovo
+                                </button>
+                            </div>
+                            
+                            <div class="tab-content" id="text-tab">
+                                <button class="element-btn" data-type="text">
+                                    <i data-lucide="plus"></i> Add Text Field
+                                </button>
+                            </div>
+                            
+                            <div class="tab-content" id="metric-tab">
+                                <button class="element-btn" data-type="metric">
+                                    <i data-lucide="plus"></i> Total Following
+                                </button>
+                                <button class="element-btn" data-type="metric">
+                                    <i data-lucide="plus"></i> Total Reach
+                                </button>
+                            </div>
+                            
+                            <div class="tab-content" id="photo-tab">
+                                <button class="element-btn" data-type="photo">
+                                    <i data-lucide="plus"></i> Add Photo
+                                </button>
+                            </div>
+                            
+                            <div class="tab-content" id="chart-tab">
+                                <button class="element-btn" data-type="chart">
+                                    <i data-lucide="plus"></i> Add Chart
+                                </button>
+                                <div class="tab-description">
+                                    Perfect for demographics, age distribution, gender, location stats
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Element Properties -->
+                <div class="card" id="properties-card" style="display: none;">
+                    <div class="card-header">
+                        <h3>Edit Element</h3>
+                        <div class="element-controls">
+                            <button id="center-btn" class="control-btn" title="Center Element">
+                                <i data-lucide="align-center"></i>
+                            </button>
+                            <button id="delete-btn" class="control-btn delete">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content" id="properties-content">
+                        <!-- Properties will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <div id="canvas" class="canvas">
+                        <!-- Elements will be added here -->
+                        
+                        <!-- Footer -->
+                        <div class="canvas-footer">
+                            <a href="https://trueconext.com/" target="_blank" rel="noopener noreferrer">
+                                <img src="https://raw.githubusercontent.com/Trueconext/TrueConextW/refs/heads/main/Icon%20Only%20No%20Background.png" alt="TrueConext Logo" class="footer-logo">
+                                Powered by TrueConext
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
