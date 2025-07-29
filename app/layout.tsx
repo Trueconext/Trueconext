@@ -4,9 +4,11 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'MediaKitGen',
-  description: 'Powered by TrueConext',
-  generator: 'v0.dev',
+  title: 'MediaKit Gen — Powered by TrueConext',
+  description: 'A toolkit to showcase creators with style and ease.',
+  generator: 'TrueConext',
+  keywords: ['MediaKit', 'TrueConext', 'Influencers', 'Marketing', 'Creator Tools'],
+  authors: [{ name: 'TrueConext' }],
 }
 
 export default function RootLayout({
