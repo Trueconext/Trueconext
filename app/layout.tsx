@@ -5,7 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'MediaKit Gen — Powered by TrueConext',
-  description: 'A toolkit to showcase creators with style and ease.',
+  description: 'MediaKit for Creators.',
   generator: 'TrueConext',
   keywords: ['MediaKit', 'TrueConext', 'Influencers', 'Marketing', 'Creator Tools'],
   authors: [{ name: 'TrueConext' }],
