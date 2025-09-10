@@ -105,7 +105,7 @@ const DEFAULT_GRADIENT: BackgroundGradient = {
 export default function MediaKitGenerator() {
   const [elements, setElements] = useState<MediaKitElement[]>([])
   const [selectedElement, setSelectedElement] = useState<string | null>(null)
-  const [creatorName, setCreatorName] = useState("Esteban Nicolas Rodofili")
+  const [creatorName, setCreatorName] = useState("Creator Name")
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [draggedElement, setDraggedElement] = useState<string | null>(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
