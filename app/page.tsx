@@ -606,7 +606,7 @@ export default function MediaKitGenerator() {
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="creator-name" className="text-white">
-                      Esteban Nicolas Rodofili
+                      Name
                     </Label>
                     <Input
                       id="creator-name"
